@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14.1-alpine
+    env_file:
+      - ./.env
+    ports:
+      - '${HOST_PORT}:${DB_PORT}'
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: '${DB_USER}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      POSTGRES_DB: '${DB_NAME}'
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+  api: &api
+    build:
+      context: .
+      dockerfile: ./deployments/docker/dev/Dockerfile
+    env_file:
+      - ./.env
+    ports:
+      - '${BACKEND_PORT}:${BACKEND_PORT}'
+    volumes:
+      - ./app:/app
+    restart: always
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"    # RabbitMQ default port
+      - "15672:15672"  # RabbitMQ management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+
+    volumes:
+    - rabbitmq_data:/var/lib/rabbitmq
+
+  admin_consumer:
+    <<: *api
+    command: python /app/admin/consumer.py
+    env_file:
+      - ./.env
+    environment:
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - rabbitmq
+      - api
+    restart: always
+    ports: []
+    volumes:
+      - ./app:/app
+
+  users_consumer:
+    <<: *api
+    command: python /app/users/consumer.py
+    env_file:
+      - ./.env
+    environment:
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - rabbitmq
+      - api
+    restart: always
+    ports: []
+    volumes:
+      - ./app:/app
+
+volumes:
+  postgres-db:
+  rabbitmq_data:

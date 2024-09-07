@@ -1,5 +1,5 @@
 
-from .customs import CustomEnum
+from utils.models import CustomEnum
 
 class CategoryChoices(CustomEnum):
     FICTION = "Fiction"
