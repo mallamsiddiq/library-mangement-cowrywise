@@ -16,12 +16,19 @@ class BookSerializer(DataEchangeSerializer):
 
 
 class IssuanceSerializer(DataEchangeSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset = User.objects.all(), read_only=False) 
+    book = serializers.PrimaryKeyRelatedField(queryset = Book.objects.all(), read_only=False) 
+    
     class Meta:
         model = Issuance
         fields = '__all__' 
 
 
 class UsersSerializer(DataEchangeSerializer):
+    email = serializers.CharField(read_only=False, required = False)  
     class Meta:
-        model = User
-        fields = '__all__'  
+        model = User 
+        fields = ['id', 'email', 'firstname', 'lastname', 'is_superuser', 
+                  'is_staff', 'is_active', 'last_login', 'created_at', 'updated_at']
+
+        

@@ -1,8 +1,0 @@
-/venv
-./.pytest_cache
-.coverage
-cred2.json
-credentials.json
-playground.py
-
-migrations/00*

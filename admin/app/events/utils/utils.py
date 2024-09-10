@@ -1,5 +1,5 @@
-
 from contextlib import contextmanager
+
 
 @contextmanager
 def event_bus_context(model_class):

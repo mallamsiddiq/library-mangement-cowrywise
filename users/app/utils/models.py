@@ -14,12 +14,14 @@ class CustomEnum(Enum):
         return [(c.value, c.value) for c in cls]
 
 
-
-
 class AuditableModel(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    @property
+    def time_stamp(self):
+        return self.created_at
 
     class Meta:
         abstract = True

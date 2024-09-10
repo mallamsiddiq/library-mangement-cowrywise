@@ -16,7 +16,6 @@ def publish_to_network(message, queue, exchange = None):
     # Declare a queue to send the message to
     channel.queue_declare(queue=queue)
 
-    # Prepare the message content (you can send more details about the book)
     message = message
 
     # Publish the message to the RabbitMQ queue
@@ -24,7 +23,7 @@ def publish_to_network(message, queue, exchange = None):
                           routing_key=queue,
                           body=json.dumps(message),
                           properties=pika.BasicProperties(
-                              delivery_mode=2  # Make message persistent
+                              delivery_mode=2
                           ))
     
     connection.close()

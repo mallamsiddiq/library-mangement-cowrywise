@@ -1,11 +1,7 @@
 from django.contrib.auth import get_user_model
-from django.conf import settings
 from django.db import models
-from rest_framework import (
-    generics, views, status, viewsets, mixins, 
-    permissions
-)
-from rest_framework.response import Response
+
+from rest_framework import (viewsets, mixins,permissions)
 from rest_framework.decorators import action
 
 from library.serializers import (LibraryUserSerializer, BookSerializer, PlainBookSerializer,

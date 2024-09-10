@@ -1,13 +1,11 @@
 from pathlib import Path
-import os, sys
+import os
 import dj_database_url
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 DOCKER_BASE_DIR = BASE_DIR.parent
-sys.path.insert(0, os.path.join(DOCKER_BASE_DIR, 'apps'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "sample_key")
@@ -33,12 +31,10 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-
 APPS = [
     'authapp',
     'library',
 ]
-
 
 THIRD_PARTY=[
     "rest_framework",
@@ -104,7 +100,7 @@ REST_FRAMEWORK = {
 # OpenAPI Configuration
 SPECTACULAR_SETTINGS = {
     'TITLE': 'NSPARE API Service',
-    'DESCRIPTION': 'NSPARE Backend API service',
+    'DESCRIPTION': 'Cowrywise Book Library API',
     'VERSION': f'{os.environ.get("API_VERSION", 1)}',
     'SERVE_INCLUDE_SCHEMA': False,
     
@@ -128,14 +124,12 @@ SIMPLE_JWT = {
     "JSON_ENCODER": None,
     "JWK_URL": None,
     "LEEWAY": 0,
-    
 }
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin,
     'django.contrib.auth.backends.ModelBackend',
 ]
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -148,20 +142,7 @@ DATABASES = {
         conn_health_checks=True,
     )
 }
-AMQP_URL = os.environ.get('AMQP_URL', 'amqp://user:password@rabbitmq:/%2F')
-
-# CACHES = {
-    
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": os.environ.get("REDIS_URL"),
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#             "PASSWORD": os.environ.get("REDIS_PASSWORD")
-#         },
-#         "KEY_PREFIX":"nspare"
-#     }
-# }
+AMQP_URL = os.environ.get('AMQP_URL', '')
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
@@ -177,10 +158,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(DOCKER_BASE_DIR, "resources/static")
@@ -194,3 +173,5 @@ MEDIA_ROOT = os.path.join(DOCKER_BASE_DIR, "resources/media")
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+from .loggin import LOGGING

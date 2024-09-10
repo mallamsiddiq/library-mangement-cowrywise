@@ -1,18 +1,17 @@
 import pika
 import json
-
-
-AMQP_URL = 'amqp://user:password@rabbitmq:/%2F'
-
-url_params = pika.URLParameters(AMQP_URL)
+from django.conf import settings
 
 def publish_to_network(message, queue, exchange = None):
     
-    exchange = exchange or 'admin_events'
     
-    
+    AMQP_URL = getattr(settings, 'AMQP_URL')
+    url_params = pika.URLParameters(AMQP_URL)
+
     connection = pika.BlockingConnection(url_params)
     channel = connection.channel()
+    
+    exchange = exchange or 'admin_events'
     
     # Declare a queue to send the message to
     channel.queue_declare(queue=queue)
@@ -25,7 +24,8 @@ def publish_to_network(message, queue, exchange = None):
                           routing_key=queue,
                           body=json.dumps(message),
                           properties=pika.BasicProperties(
-                              delivery_mode=2  # Make message persistent
+                              delivery_mode=2
                           ))
     
     connection.close()
+    

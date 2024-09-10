@@ -56,7 +56,3 @@ networks:
     external: true
     # driver: bridge
     name: admin-network
-
-  users-network:
-    driver: bridge
-    name: users-network
