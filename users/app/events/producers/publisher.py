@@ -7,7 +7,7 @@ def publish_to_network(message, queue, exchange = None):
     
     AMQP_URL = getattr(settings, 'AMQP_URL')
     url_params = pika.URLParameters(AMQP_URL)
-
+    print(AMQP_URL)
     connection = pika.BlockingConnection(url_params)
     channel = connection.channel()
     

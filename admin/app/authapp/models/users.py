@@ -38,10 +38,6 @@ class User(AuditableModel, AbstractBaseUser, PermissionsMixin):
     @property
     def full_name(self):
         return f"{self.get_full_name()}"
-    
-    def save_last_login(self):
-        self.last_login = datetime.now()
-        self.save()
 
     def change_password(self, password):
         self.set_password(password)

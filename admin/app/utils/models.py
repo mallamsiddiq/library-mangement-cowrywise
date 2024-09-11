@@ -14,6 +14,7 @@ class CustomEnum(Enum):
         return [(c.value, c.value) for c in cls]
 
 
+
 class AuditableModel(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -25,3 +26,4 @@ class AuditableModel(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['-created_at'] 

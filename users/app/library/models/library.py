@@ -27,6 +27,9 @@ class Book(AuditableModel):
 
     def __str__(self):
         return f"{self.title} by {self.author}"
+    
+    # class Meta:
+    #     ordering = ['-created_at'] 
 
     @property
     def available_copies(self):

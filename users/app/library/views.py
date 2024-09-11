@@ -16,9 +16,7 @@ from utils.exceptions import BookNotAvailableException
 
 class BookViewSet(viewsets.GenericViewSet,
                   mixins.ListModelMixin, mixins.RetrieveModelMixin):
-    queryset = Book.objects.filter(
-                total_copies__gt=models.F('copies_borrowed')
-            )
+    queryset = Book.objects.all()
     serializer_class = PlainBookSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -26,19 +24,27 @@ class BookViewSet(viewsets.GenericViewSet,
     filterset_fields = ['publisher', 'category']
     
     def get_queryset(self):
-        user = self.request.user
-        if self.action == 'borrow_book':
-            queryset = super().get_queryset().exclude(
-                issuances__user=user, issuances__returned_at__isnull=True
+        queryset = super().get_queryset()
+        if self.action != 'return_book':
+            # unavailable books are only open for return 
+            queryset = queryset.filter(
+                total_copies__gt=models.F('copies_borrowed')
             )
             
-            if not queryset:
-                raise BookNotAvailableException("Book Not Available for You")
-            return queryset
-            
-        return super().get_queryset()
+        return queryset
     
-    @action(detail=True, methods=['post'], url_path='borrow', 
+    def get_object(self):
+        obj = super().get_object()
+        user = self.request.user
+
+        # Check if the user has already borrowed the book and hasn't returned it
+        if self.action == 'borrow_book':
+            if obj.issuances.filter(user=user, returned_at__isnull=True).exists():
+                raise BookNotAvailableException("Book Not Available for You")
+
+        return obj
+    
+    @action(detail=True, methods=['post'], url_path='borrow', url_name='borrow',
             serializer_class = BorrowBookSerializer)
     def borrow_book(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -47,7 +53,7 @@ class BookViewSet(viewsets.GenericViewSet,
         issuance_serializer = self.serializer_class(issuance)
         return Response(issuance_serializer.data, status=status.HTTP_201_CREATED)
     
-    @action(detail=True, methods=['post'], url_path='return')
+    @action(detail=True, methods=['post'], url_path='return', url_name='return')
     def return_book(self, request, *args, **kwargs):
         book = self.get_object()
         user = request.user

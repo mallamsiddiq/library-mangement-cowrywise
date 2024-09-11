@@ -1,6 +1,6 @@
 FROM python:3.9
 
-LABEL authors="Akinyemi Sodiq"
+LABEL authors="Peter Bemshima, Akinyemi Sodiq"
 
 # Set environment variables
 ENV PIP_DISABLE_PIP_VERSION_CHECK 1

@@ -7,8 +7,9 @@ from rest_framework.decorators import action
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from authapp.serializers import (
-    AdminRegistrationSerializer, UserSerializer
+    AdminRegistrationSerializer, UserSerializer, AdminLoginSerializer
 )
+from .permission import IsLibraryAdminUser
 
 
 User = get_user_model()
@@ -16,7 +17,7 @@ User = get_user_model()
 class AuthViewSet(viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated, IsLibraryAdminUser]
     
     @action(detail=False, methods=['post'], url_path='admin-signup', 
             permission_classes = [permissions.AllowAny],
@@ -29,9 +30,9 @@ class AuthViewSet(viewsets.GenericViewSet):
     
     @action(detail=False, methods=['post'], url_path='login',
             permission_classes = [permissions.AllowAny],
-            serializer_class = TokenObtainPairView.serializer_class)
+            serializer_class = AdminLoginSerializer)
     def login(self, request):
-        view = TokenObtainPairView.as_view()
+        view = TokenObtainPairView.as_view(serializer_class=AdminLoginSerializer)
         return view(request._request)
     
     @action(detail=False, methods=['get'], url_path='me')

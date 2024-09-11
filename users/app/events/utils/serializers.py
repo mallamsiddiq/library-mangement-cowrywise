@@ -16,8 +16,8 @@ class BookSerializer(DataEchangeSerializer):
 
 
 class IssuanceSerializer(DataEchangeSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset = User.objects.all(), read_only=False) 
-    book = serializers.PrimaryKeyRelatedField(queryset = Book.objects.all(), read_only=False) 
+    user = serializers.UUIDField(source = 'user.id', read_only=False) 
+    book = serializers.UUIDField(source = 'book.id', read_only=False) 
     
     class Meta:
         model = Issuance

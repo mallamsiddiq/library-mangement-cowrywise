@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
-from rest_framework import serializers
+from rest_framework import serializers, status
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class AdminRegistrationSerializer(serializers.ModelSerializer):
     
@@ -25,8 +27,24 @@ class AdminRegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
+class AdminLoginSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        
+        # Check if the user is an admin (you can customize this logic later)
+        # this is to be user created through data syncronization dont have access
+        if not self.user.is_staff:  # Or replace with your custom check
+            raise AuthenticationFailed(
+                "You are not authorized to login as here", 
+                code=status.HTTP_403_FORBIDDEN
+            )
+        
+        return data
+
+
 class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = get_user_model()
         fields = ("firstname", "lastname", "email",)
+        

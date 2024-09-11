@@ -30,6 +30,9 @@ class Book(AuditableModel):
         latest_return_date = self.issuances.filter(returned_at__isnull=True)\
             .aggregate(return_date = models.Max('date_to_return'))['return_date']
         return latest_return_date or None
+    
+    class Meta:
+        ordering = ['-created_at'] 
 
 
 class Issuance(AuditableModel):
