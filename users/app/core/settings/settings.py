@@ -102,7 +102,7 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Book Library Frontend API ',
     'DESCRIPTION': (
         "This API is provided for  Cowrywise test Book library\n\n"
-        "Author: Akinyemi Sodiq \n\n"
+        "Author: Akinyemi Sodiq @mallamsiddiq@gmail.com \n\n"
     ),
     'VERSION': f'{os.environ.get("API_VERSION", 1)}',
     'SERVE_INCLUDE_SCHEMA': False,
