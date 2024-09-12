@@ -3,7 +3,7 @@
 # Library Management System API
 
 ## Overview
--This project is a library management system with separate APIs for frontend and backend administration. It allows users to borrow books, view available books, and enables administrators to manage the book catalogue and track user activities.
+This project is a library management system with separate APIs for frontend and backend administration. It allows users to borrow books, view available books, and enables administrators to manage the book catalogue and track user activities.
 
 ### Features
 ### Frontend [library users] API
