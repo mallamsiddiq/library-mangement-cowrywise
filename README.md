@@ -1,7 +1,3 @@
-Here's the updated README with a copyright section and contact information:
-
----
-
 # Library Management System API
 
 This project provides a RESTful API for managing a library system, including user authentication, book management, and issuance tracking.
@@ -262,18 +258,22 @@ docker-compose exec api python manage.py test
 
 ## Scope and Limitations
 
-- Publisher and made Enums real
-- The .env Variables are made public to ease setup set up and  configuration 
-- User can't borrow a book twice without return the earlier copy
-- You can't borrrow borrow that is unavailable books in the catalogue
+- **Efficient Querying and Filtering:** To enhance efficiency in querying and filtering operations, especialy in retrieving complex queries, the `copies_borrowed` field was added to the **User** table. This field tracks the number of book coppies borrowed is auto incremented when a book is borrowed or returned respecfuly
+
+- **Publisher and Made Enums Real:** The `publisher` field, along with other relevant fields, has been set up with enumerations for stricter validation and consistency in the data.
+
+- **No Borrowing Duplicate Copies:** A user cannot borrow the same book twice without returning the earlier borrowed copy first. This ensures that users do not have duplicate active borrowings of the same title.
+
+- **Unavailable Books:** Users are restricted from borrowing books that are marked as unavailable in the catalogue. The system automatically prevents requests for books that are either checked out or have no available copies left.
+
+
 
 
 ## Security Concerns and Limitations
 
-- **Unauthenticated Admin Endpoints:** Some admin endpoints are currently unauthenticated for ease of setup and usage. This configuration is not suitable for production environments. Consider implementing proper authentication and authorization before deploying to production.
+- **Public `.env` Variables:** The `.env` file has been made public in the repository to simplify the setup and configuration process. This is only recommended for local development and testing environments. Ensure the `.env` file is secured and excluded in production.
 
-- **.env File:** The `.env` file containing sensitive environment variables is available in the repository for ease of setup. This file should not be exposed or committed to version control in production environments. Make sure to secure this file and use appropriate environment variable management practices in production.
-
+- **Unauthenticated Endpoints:** Some admin endpoints are currently unauthenticated for ease of setup and usage (to play with). This configuration is not suitable for production environments. Also Endpoints on the users side that does does not need the user Identity are not protected.
 
 ## Copyright
 
