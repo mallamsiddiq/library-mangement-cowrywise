@@ -17,7 +17,8 @@ This project provides a RESTful API for managing a library system, including use
 7. [Security Concerns and Limitations](#security-concerns-and-limitations)
 8. [Contributing](#contributing)
 9. [License](#license)
-10. [Copyright](#copyright)
+10. [Scope and Limitations](#Scope-and-Limitations)
+11. [Copyright](#copyright)
 
 ## Setup
 
