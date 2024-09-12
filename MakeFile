@@ -4,9 +4,9 @@ ADMIN_DIR = admin
 USER_DIR = users
 
 # Targets
-.PHONY: all build up down logs test
+.PHONY: start stop logs status test-users test-admin
 
-all: build up
+test-all: test-admin test-users
 
 start:
 	@echo "Starting Docker containers..."
@@ -24,7 +24,15 @@ logs:
 	$(DOCKER_COMPOSE) -f $(ADMIN_DIR)/compose.yaml logs
 	$(DOCKER_COMPOSE) -f $(USER_DIR)/compose.yaml logs
 
-test:
-	@echo "Running tests..."
-	$(DOCKER_COMPOSE) -f $(ADMIN_DIR)/compose.yaml exec api python manage.py test tests
+status:
+	@echo "Viewing Docker logs..."
+	$(DOCKER_COMPOSE) -f $(ADMIN_DIR)/compose.yaml ps
+	$(DOCKER_COMPOSE) -f $(USER_DIR)/compose.yaml ps
+
+test-users:
+	@echo "Running tests on user api..."
 	$(DOCKER_COMPOSE) -f $(USER_DIR)/compose.yaml exec api python manage.py test tests
+
+test-admin:
+	@echo "Running tests on admin api..."
+	$(DOCKER_COMPOSE) -f $(ADMIN_DIR)/compose.yaml exec api python manage.py test tests

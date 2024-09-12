@@ -13,8 +13,9 @@ if "%1"=="status" goto status
 if "%1"=="test-admin" goto test-admin
 if "%1"=="test-users" goto test-users
 if "%1"=="test-all" goto test-all
+if "%1"=="logs" goto logs
 
-echo Invalid argument. Usage:
+echo Invalid argument. Here is the Usage:
 echo   %0 start
 echo   %0 stop
 echo   %0 rebuild
@@ -22,6 +23,7 @@ echo   %0 status
 echo   %0 test-admin
 echo   %0 test-users
 echo   %0 test-all
+echo   %0 logs
 goto end
 
 :: Start Docker services with delay
@@ -58,16 +60,23 @@ cd ..\%USERS_PATH%
 docker compose ps
 goto end
 
+:logs
+cd %ADMIN_PATH%
+docker compose logs
+cd ..\%USERS_PATH%
+docker compose logs
+goto end
+
 :: Run tests for the admin service
 :test-admin
 cd %ADMIN_PATH%
-docker compose run --rm web pytest
+docker compose exec api python manage.py test tests
 goto end
 
 :: Run tests for the users service
 :test-users
 cd %USERS_PATH%
-docker compose run --rm web pytest
+docker compose exec api python manage.py test tests
 goto end
 
 :: Run tests for both services
