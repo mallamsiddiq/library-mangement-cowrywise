@@ -69,6 +69,26 @@
     docker compose up -d --build
     ```
 
+- or use the make command, I added makefile amd make.bat, if you are on windows
+
+- **Spin Up the Docker Containers:**
+   ```sh
+   make start
+   ```
+- **Stop Docker Containers:**
+   ```sh
+   make stop
+   ```
+- **View Docker Logs:**
+   ```sh
+   make logs
+   ```
+- **Run Tests:**
+   ```sh
+   make test
+   ```
+
+
 3. **Access the services:**
     frontend api is hosted on port 9090
     admin api is hosted on port 8080

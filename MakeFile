@@ -1,0 +1,30 @@
+# Variables
+DOCKER_COMPOSE = docker-compose
+ADMIN_DIR = admin
+USER_DIR = users
+
+# Targets
+.PHONY: all build up down logs test
+
+all: build up
+
+start:
+	@echo "Starting Docker containers..."
+	$(DOCKER_COMPOSE) -f $(ADMIN_DIR)/compose.yaml up -d --build
+	sleep 10
+	$(DOCKER_COMPOSE) -f $(USER_DIR)/compose.yaml up -d --build
+
+stop:
+	@echo "Stopping Docker containers..."
+	$(DOCKER_COMPOSE) -f $(ADMIN_DIR)/compose.yaml down
+	$(DOCKER_COMPOSE) -f $(USER_DIR)/compose.yaml down
+
+logs:
+	@echo "Viewing Docker logs..."
+	$(DOCKER_COMPOSE) -f $(ADMIN_DIR)/compose.yaml logs
+	$(DOCKER_COMPOSE) -f $(USER_DIR)/compose.yaml logs
+
+test:
+	@echo "Running tests..."
+	$(DOCKER_COMPOSE) -f $(ADMIN_DIR)/compose.yaml exec api python manage.py test tests
+	$(DOCKER_COMPOSE) -f $(USER_DIR)/compose.yaml exec api python manage.py test tests
