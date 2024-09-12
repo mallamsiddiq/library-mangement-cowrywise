@@ -7,7 +7,7 @@ urlpatterns = [
     path(f"{url_version}/schema/", SpectacularAPIView.as_view(), name='schema'),
     path(f"{url_version}/doc/", SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path(f"{url_version}/redoc/", SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-    path('admin-portal/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
     path(f"{url_version}/", include('authapp.urls')),
     path(f"{url_version}/", include('library.urls')),

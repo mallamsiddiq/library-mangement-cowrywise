@@ -1,3 +1,5 @@
+### [pLeAse ReAd ME !]
+
 # Library Management System API
 
 This project provides a RESTful API for managing a library system,  buidling two independent api services for admin and library users they both include user authentication, book management, and issuance tracking.
@@ -58,9 +60,16 @@ This project provides a RESTful API for managing a library system,  buidling two
     - **Frontend:** [http://localhost:9090](http://localhost:9090)
     - **Admin API:** [http://localhost:8080](http://localhost:8080)
 
+**Documentation is Accesible on:**
+- http://localhost:8080/api/v1/doc/
+- http://localhost:9090/api/v1/doc/
+
+
 ## Authentication
 
 ### User Authentication
+
+http://localhost:8080/api/v1/doc/
 
 - **Register a User:**
   
@@ -242,7 +251,12 @@ curl -H "Authorization: Bearer your-access-token" http://localhost:8080/library/
 
 ```bash
 curl -H "Authorization: Bearer your-access-token" http://localhost:8080/library/books/borrowed-by_user/123e4567-e89b-12d3-a456-426614174000/
+
+
 ```
+
+- **Django Admin Dashboard:**
+  `/admin/`
 
 ## Testing
 
