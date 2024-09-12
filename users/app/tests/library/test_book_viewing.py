@@ -18,8 +18,6 @@ class BookViewingTests(IgnoreEventBusActionsMixin, TestCase):
         self.user = get_user_model().objects.create_user(
             firstname='John', lastname='Doe', email='john.doe@example.com', password='password123'
         )
-        self.client.force_authenticate(user=self.user)  # Authenticating for protected endpoints
-
         self.books = [Book.objects.create(
             title=f'Test Book {idx}', author='Test Author', 
             publisher=(PublisherChoices.values()+['Wiley'])[idx], 

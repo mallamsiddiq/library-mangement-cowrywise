@@ -23,9 +23,9 @@ class AuthViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        return Response({'detail': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+        serializer = self.serializer_class(user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-
     @action(detail=False, methods=['post'], url_path='login',
             permission_classes = [permissions.AllowAny],
             serializer_class = TokenObtainPairView.serializer_class)

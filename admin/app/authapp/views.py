@@ -29,9 +29,12 @@ class AuthViewSet(viewsets.GenericViewSet):
             serializer_class=AdminRegistrationSerializer,)
     def register(self, request):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        serializer.is_valid(raise_exception=True)  # Authenticating for protected endpoints
         user = serializer.save()
-        return Response({'detail': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+        serializer = self.serializer_class(user)
+        return Response({'detail': 'User registered successfully'} 
+                        | serializer.data, 
+                        status=status.HTTP_201_CREATED)
     
     @action(detail=False, methods=['post'], url_path='login',
             permission_classes = [permissions.AllowAny],

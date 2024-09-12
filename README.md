@@ -124,7 +124,10 @@ http://localhost:8080/api/v1/doc/
   
   ```json
   {
-    "detail": "User registered successfully"
+    "firstname": "John",
+    "id": "your uuid",
+    "lastname": "Doe",
+    "email": "john.doe@example.com",
   }
   ```
 
@@ -174,7 +177,10 @@ http://localhost:8080/api/v1/doc/
   
   ```json
   {
-    "detail": "User registered successfully"
+    "detail": "User registered successfully",
+    "firstname": "Admin",
+    "lastname": "User",
+    "email": "admin@cowrywise.com",
   }
   ```
 
@@ -259,19 +265,20 @@ Lists all users (admin only).
 Lists all issuances (admin only).
 this endpoint list issuances with corresponding users and books
 
-#### `POST /library/books/{book_id}borrowing/` {protecte identify the user}
+#### `POST /library/books/{book_id}/borrow/`
 Creates a new book borrow issuance .
 
 **Request Body:**
 
 ```json
 {
-  "date_to_return": "YYYY-MM-DDTHH:MM:SSZ"
+  "date_to_return": "YYYY-MM-DDTHH:MM:SSZ",
+  "user": "your id", //optional, you can ignore if you have auth token,  the system knows you if you are logged in
 }
 ```
 
 #### `GET /library/borrowing/{id}/`
-Retrieves details of a specific issuance.
+Retrieves details of a specific borrowing issuance.
 
 ## Usage Examples
 
@@ -307,6 +314,13 @@ docker-compose exec api python manage.py test
 cd ../users
 docker-compose exec api python manage.py test
 ```
+or user the make file provided
+
+```bash
+  make test_users
+  make test_admin
+  make test_all
+```
 
 
 ## Scope and Limitations
@@ -324,7 +338,7 @@ docker-compose exec api python manage.py test
 
 - **Public `.env` Variables:** The `.env` file has been made public in the repository to simplify the setup and configuration process. This is only recommended for local development and testing environments. Ensure the `.env` file is secured and excluded in production.
 
-- **Unauthenticated Endpoints:** Some admin endpoints are currently unauthenticated for ease of setup and usage (to play with). This configuration is not suitable for production environments. Also Endpoints on the users side that does does not need the user Identity are not protected.
+- **Unauthenticated Endpoints:** Some admin endpoints are currently unauthenticated for ease of setup and usage (to play with). This configuration is not suitable for production environments. Also Endpoints on the users side trequires the user Identity are made flexible, login or provide your user uuid.
 
 ## Copyright
 

@@ -22,7 +22,6 @@ class UserRegistrationTests(IgnoreEventBusActionsMixin, APITestCase):
     def test_successful_registration(self):
         response = self.client.post(self.url, self.valid_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data['detail'], 'User registered successfully')
         
         user = get_user_model().objects.filter(email=self.valid_data['email']).first()
         self.assertIsNotNone(user)

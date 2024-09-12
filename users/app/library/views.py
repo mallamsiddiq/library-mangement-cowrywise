@@ -9,9 +9,8 @@ from rest_framework.decorators import action
 
 from django_filters.rest_framework import DjangoFilterBackend
 
-from library.serializers import (BorrowBookSerializer, PlainBookSerializer)
+from library.serializers import (BorrowBookSerializer, PlainBookSerializer, ReturnBookSerializer)
 from library.models import Book
-from utils.exceptions import BookNotAvailableException
     
 
 class BookViewSet(viewsets.GenericViewSet,
@@ -33,31 +32,23 @@ class BookViewSet(viewsets.GenericViewSet,
             
         return queryset
     
-    def get_object(self):
-        obj = super().get_object()
-        user = self.request.user
-
-        # Check if the user has already borrowed the book and hasn't returned it
-        if self.action == 'borrow_book':
-            if obj.issuances.filter(user=user, returned_at__isnull=True).exists():
-                raise BookNotAvailableException("Book Not Available for You")
-
-        return obj
-    
     @action(detail=True, methods=['post'], url_path='borrow', url_name='borrow',
-            serializer_class = BorrowBookSerializer, permission_classes = [permissions.IsAuthenticated])
+            serializer_class = BorrowBookSerializer)
     def borrow_book(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         issuance = serializer.save()
         issuance_serializer = self.serializer_class(issuance)
         return Response(issuance_serializer.data, status=status.HTTP_201_CREATED)
-    
+
+
     @action(detail=True, methods=['post'], url_path='return', url_name='return',
-            permission_classes = [permissions.IsAuthenticated])
+            serializer_class = ReturnBookSerializer)
     def return_book(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data.get('user')
         book = self.get_object()
-        user = request.user
 
         issuance = user.book_issuances.filter( book=book, returned_at__isnull=True).last()
         if not issuance:
@@ -65,5 +56,4 @@ class BookViewSet(viewsets.GenericViewSet,
 
         # Mark the book as returned
         issuance.mark_returned()
-
         return Response({"detail": "Book returned successfully."}, status=status.HTTP_200_OK)
