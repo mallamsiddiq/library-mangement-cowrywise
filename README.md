@@ -69,7 +69,7 @@ This project is a library management system with separate APIs for frontend and 
     docker compose up -d --build
     ```
 
-- or use the make command, I added makefile amd make.bat, if you are on windows
+- - Or use the make command, I added make.bat if you are on windows and makefile if you are not 
 
 - **Spin Up the Docker Containers:**
    ```sh
@@ -85,9 +85,8 @@ This project is a library management system with separate APIs for frontend and 
    ```
 - **Run Tests:**
    ```sh
-   make test
+   make test-all
    ```
-
 
 3. **Access the services:**
     frontend api is hosted on port 9090
