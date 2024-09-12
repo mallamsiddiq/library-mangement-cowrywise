@@ -1,6 +1,11 @@
 # Library Management System API
 
-This project provides a RESTful API for managing a library system, including user authentication, book management, and issuance tracking.
+This project provides a RESTful API for managing a library system,  buidling two independent api services for admin and library users they both include user authentication, book management, and issuance tracking.
+
+
+## Technologies Used
+
+**Django**, **Django REST Framework (DRF)**, **PostgreSQL**, **Docker**, **RabbitMQ**, **Python**
 
 ## Table of Contents
 
@@ -258,15 +263,13 @@ docker-compose exec api python manage.py test
 
 ## Scope and Limitations
 
-- **Efficient Querying and Filtering:** To enhance efficiency in querying and filtering operations, especialy in retrieving complex queries, the `copies_borrowed` field was added to the **User** table. This field tracks the number of book coppies borrowed is auto incremented when a book is borrowed or returned respecfuly
+- **Efficient Querying and Filtering:** To enhance efficiency in querying and filtering operations, especialy in retrieving complex queries, the `copies_borrowed` field was added to the **Book** table. This field tracks the number of book coppies borrowed is auto incremented when a book is borrowed or returned respecfuly
 
 - **Publisher and Made Enums Real:** The `publisher` field, along with other relevant fields, has been set up with enumerations for stricter validation and consistency in the data.
 
 - **No Borrowing Duplicate Copies:** A user cannot borrow the same book twice without returning the earlier borrowed copy first. This ensures that users do not have duplicate active borrowings of the same title.
 
 - **Unavailable Books:** Users are restricted from borrowing books that are marked as unavailable in the catalogue. The system automatically prevents requests for books that are either checked out or have no available copies left.
-
-
 
 
 ## Security Concerns and Limitations
