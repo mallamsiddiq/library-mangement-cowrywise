@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14.1-alpine
+    env_file:
+      - ./.env
+    ports:
+      - '${DB_PORT}:5432'
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: '${DB_USER}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      POSTGRES_DB: 'users_db'
+    volumes:
+      - users-db:/var/lib/postgresql/data
+    networks:
+      - admin-network
+
+  api: &api
+    build:
+      context: ./
+      dockerfile: ./deployments/docker/dev/Dockerfile
+    env_file:
+      - ./.env
+    ports:
+      - '${BACKEND_PORT}:8000'
+    volumes:
+      - ./app:/app
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - admin-network
+
+  consumer:
+    <<: *api
+    command: python /app/consumer.py
+    entrypoint: ["python", "events/consumers/main.py"]
+    environment:
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - api
+    restart: always
+    ports: []
+    volumes:
+      - ./app:/app
+    networks:
+      - admin-network
+
+volumes:
+  users-db:
+
+networks:
+  admin-network:
+    external: true
+    # driver: bridge
+    name: admin-network

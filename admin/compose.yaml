@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14.1-alpine
+    env_file:
+      - ./.env
+    ports:
+      - '${DB_PORT}:5432'
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: '${DB_USER}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      POSTGRES_DB: 'admin_db'
+    volumes:
+      - admin-db:/var/lib/postgresql/data
+    networks:
+      - admin-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"    # RabbitMQ default port for AMQP protocol
+      - "15672:15672"  # RabbitMQ management UI port
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    expose:
+      - 5672
+      - 15672
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 5s
+      timeout: 15s
+      retries: 1
+
+    networks:
+      - admin-network
+
+  api: &api
+    build:
+      context: ./
+      dockerfile: ./deployments/docker/dev/Dockerfile
+    env_file:
+      - ./.env
+    ports:
+      - '${BACKEND_PORT}:8000'
+    volumes:
+      - ./app:/app
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - admin-network
+
+  consumer:
+    <<: *api
+    command: python /app/consumer.py
+    entrypoint: ["python", "events/consumers/main.py"]
+    environment:
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - api
+    restart: always
+    ports: []
+    volumes:
+      - ./app:/app
+    networks:
+      - admin-network
+
+volumes:
+  admin-db:
+  rabbitmq_data:
+
+networks:
+  admin-network:
+    external: true
+    # driver: bridge
+    name: admin-network
+    
