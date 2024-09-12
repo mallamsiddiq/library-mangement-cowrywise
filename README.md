@@ -259,7 +259,12 @@ docker-compose exec api python manage.py test
 ```
 
 
-## Scope
+## Scope and Limitations
+
+- Publisher and made Enums real
+- The .env Variables are made public to ease setup set up and  configuration 
+- User can't borrow a book twice without return the earlier copy
+- You can't borrrow borrow that is unavailable books in the catalogue
 
 
 ## Security Concerns and Limitations
