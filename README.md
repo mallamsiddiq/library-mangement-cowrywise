@@ -273,7 +273,7 @@ Creates a new book borrow issuance .
 ```json
 {
   "date_to_return": "YYYY-MM-DDTHH:MM:SSZ",
-  "user": "your id", //optional, you can ignore if you have auth token,  the system knows you if you are logged in
+  "user": "your id", "optional, you can ignore if you have auth token,  the system knows you if you are logged in"
 }
 ```
 
