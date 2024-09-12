@@ -13,7 +13,7 @@ class LibraryUserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = get_user_model()
-        fields = ("firstname", "lastname", "email",)
+        fields = ("id", "firstname", "lastname", "email",)
 
 
 class PlainBookSerializer(serializers.ModelSerializer):
