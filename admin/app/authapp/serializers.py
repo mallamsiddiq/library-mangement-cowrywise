@@ -35,7 +35,7 @@ class AdminLoginSerializer(TokenObtainPairSerializer):
         # this is to be user created through data syncronization dont have access
         if not self.user.is_staff:  # Or replace with your custom check
             raise AuthenticationFailed(
-                "You are not authorized to login as here", 
+                "You are not authorized to login in here", 
                 code=status.HTTP_403_FORBIDDEN
             )
         

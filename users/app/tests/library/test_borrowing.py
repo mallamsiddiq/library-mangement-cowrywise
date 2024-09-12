@@ -1,4 +1,5 @@
 # tests/test_views.py
+import datetime
 from datetime import timedelta
 from django.utils import timezone
 
@@ -92,7 +93,12 @@ class BookViewSetTests(IgnoreEventBusActionsMixin, TestCase):
     def test_return_already_returned_book(self):
         """Test returning a book that was already returned"""
         # Borrow the book and mark it as returned
-        issuance = Issuance.objects.create(book=self.book, user=self.user, returned_at='2024-09-01')
+        
+        naive_datetime = datetime.datetime.strptime('2024-09-01', '%Y-%m-%d')
+        
+        Issuance.objects.create(book=self.book, 
+                                user=self.user, 
+                                returned_at=timezone.make_aware(naive_datetime))
         
         # Try to return again
         response = self.client.post(self.return_url)

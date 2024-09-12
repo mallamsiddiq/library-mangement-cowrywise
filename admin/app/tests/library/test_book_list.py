@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.utils.timezone import localtime
+from django.utils import timezone
 
 from datetime import datetime, timedelta
 from rest_framework import status
@@ -47,10 +47,10 @@ class BookListsTestCase(IgnoreEventBusActionsMixin, APITestCase):
         
         Issuance.objects.create(user=self.library_user1,
                                 book = self.book1, 
-                                date_to_return =datetime.now() + timedelta(days=3),)
+                                date_to_return =timezone.make_aware(datetime.now() + timedelta(days=3)),)
         Issuance.objects.create(user=self.library_user2,
                                 book = self.book2, 
-                                date_to_return =datetime.now() + timedelta(days=5),)
+                                date_to_return =timezone.make_aware(datetime.now() + timedelta(days=5)),)
         
         self.unavailable_books_url = reverse('library:books-unavailables')
         self.user_borrowed_books_url = reverse('library:books-user-borowed',
@@ -95,7 +95,7 @@ class BookListsTestCase(IgnoreEventBusActionsMixin, APITestCase):
         # borrow book 3 join for user1 and 1 for user 2
         Issuance.objects.create(user=self.library_user1,
                                 book = self.book3, 
-                                date_to_return =datetime.now() + timedelta(days=3),)
+                                date_to_return = timezone.make_aware(datetime.now() + timedelta(days=3)),)
         
         """
         Test that only books user 1 borrowed are returned.

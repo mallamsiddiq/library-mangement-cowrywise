@@ -7,7 +7,8 @@ def event_bus_context(model_class):
     try:
         yield
     except Exception as e:
-        print(e)
+        print(f' Error in the Channel {e}')
+    
     finally:
         model_class.from_event_boss = False
         

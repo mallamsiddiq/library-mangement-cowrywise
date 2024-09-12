@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 
 from tests.case_utils import IgnoreEventBusActionsMixin
 
+
 class LibraryUsersViewSetTestCase(IgnoreEventBusActionsMixin, APITestCase):
     
     def setUp(self):
@@ -96,11 +97,10 @@ class LibraryUsersViewSetTestCase(IgnoreEventBusActionsMixin, APITestCase):
         self.assertEqual(len(issuances), len(data))
         
         for idx in range(len(data)):
-            print(idx, end= '  ')
             issuance_data = data[idx]
         
-            self.assertEqual(issuance_data['user'], eval(f'self.library_users[idx+1]'))
-            self.assertEqual(issuance_data['book'], eval(f'self.library_users[idx+1]'))
+            self.assertEqual(issuance_data['user'], str(eval(f'self.library_users[((idx+1)%2)]')))
+            self.assertEqual(issuance_data['book'], str(eval(f'self.books[-idx-1]')))
 
     def test_issuance_detail(self):
         """

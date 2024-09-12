@@ -49,7 +49,6 @@ class UserLoginTests(IgnoreEventBusActionsMixin, APITestCase):
             'email': self.user_data['email'],
             'password': self.user_data['password']
         }, format='json')
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertIn('detail', response.data['errors'][0])
         self.assertEqual(403, response.data['errors'][0]['code'])          

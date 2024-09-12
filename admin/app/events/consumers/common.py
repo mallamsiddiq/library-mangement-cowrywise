@@ -22,17 +22,17 @@ def event_callback(message, ModelClass, SerializerClass):
             partial = message['event'] == 'update'
             serializer = SerializerClass(data=message, partial=partial)
             serializer.is_valid(raise_exception=True)
+            data = dict(serializer.validated_data)
             
-            instance = ModelClass.objects.filter(id=model_id)
-
-            if instance:
-                # If the instance exists, update it
-                instance.update(**dict(serializer.validated_data))  # Save the updates to the database
-                created = False
-            else:
-                # If the instance does not exist, create a new one
-                instance = ModelClass.objects.create(**dict(serializer.validated_data))
-                created = True
+            update_kwargs = {'id':data.pop('id')}
+            
+            if email:=data.pop('email', ''):
+                update_kwargs.update({'email':email})
+            
+            instance, created = ModelClass.objects.update_or_create(
+                **update_kwargs,
+                defaults = data
+            )
             
             print(f"{ModelClass.__name__} {model_id} {'created' if created else 'updated'}: {instance}")
     
