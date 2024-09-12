@@ -71,12 +71,14 @@ goto end
 :test-admin
 cd %ADMIN_PATH%
 docker compose exec api python manage.py test tests
+cd ..
 goto end
 
 :: Run tests for the users service
 :test-users
 cd %USERS_PATH%
 docker compose exec api python manage.py test tests
+cd ..
 goto end
 
 :: Run tests for both services
