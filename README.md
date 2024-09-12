@@ -114,7 +114,7 @@ This project provides a RESTful API for managing a library system, including use
   **Request Body:**
 
   For simple simulation of admin registery only @cowrywise enail is allowed
-  e.g. random-strin@cowrywise.com
+  e.g. random-string@cowrywise.com
   
   ```json
   {
