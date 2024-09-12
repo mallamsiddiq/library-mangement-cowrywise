@@ -39,7 +39,7 @@ This project provides a RESTful API for managing a library system, including use
     ```bash
     # For the admin service
     # cd into the admin root to spin
-    # cd cowrywise/admin
+    cd cowrywise/admin
     # run
     docker compose up -d --build
 
