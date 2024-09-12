@@ -301,6 +301,8 @@ curl -H "Authorization: Bearer your-access-token" http://localhost:8080/library/
 
 ## Testing
 
+I have created comprenhensive tests for the two services, availabe at app/tests for each services, it covers edge all cases
+
 To run tests, ensure Docker containers are running and execute:
 
 Navigate to the respective directories and build the containers:
