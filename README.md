@@ -2,7 +2,22 @@
 
 # Library Management System API
 
-This project provides a RESTful API for managing a library system,  buidling two independent api services for admin and library users they both include user authentication, book management, and issuance tracking.
+## Overview
+-This project is a library management system with separate APIs for frontend and backend administration. It allows users to borrow books, view available books, and enables administrators to manage the book catalogue and track user activities.
+
+### Features
+### Frontend [library users] API
+- Enroll Users: Add new users to the library.
+- List Available Books: Retrieve a list of books currently available in the library.
+- Get Book by ID: Retrieve details of a specific book.
+- Filter Books: Filter books by publisher and category.
+- Borrow Books: Borrow a book by specifying the duration (in days).
+### Backend/Admin API
+- Add Books: Add new books to the library catalogue.
+- Remove Books: Remove books from the library catalogue.
+- List Users: Fetch a list of all users enrolled in the library.
+- User Borrowed Books: Fetch a list of books borrowed by a specific user.
+- Unavailable Books: List books that are currently not available for borrowing, including their expected return date.
 
 
 ## Technologies Used
