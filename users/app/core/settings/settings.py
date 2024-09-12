@@ -99,8 +99,11 @@ REST_FRAMEWORK = {
 
 # OpenAPI Configuration
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'NSPARE API Service',
-    'DESCRIPTION': 'Cowrywise Book Library API',
+    'TITLE': 'Book Library Frontend API ',
+    'DESCRIPTION': (
+        "This API is provided for  Cowrywise test Book library\n\n"
+        "Author: Akinyemi Sodiq \n\n"
+    ),
     'VERSION': f'{os.environ.get("API_VERSION", 1)}',
     'SERVE_INCLUDE_SCHEMA': False,
     

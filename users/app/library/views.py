@@ -18,7 +18,7 @@ class BookViewSet(viewsets.GenericViewSet,
                   mixins.ListModelMixin, mixins.RetrieveModelMixin):
     queryset = Book.objects.all()
     serializer_class = PlainBookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['publisher', 'category']
@@ -45,7 +45,7 @@ class BookViewSet(viewsets.GenericViewSet,
         return obj
     
     @action(detail=True, methods=['post'], url_path='borrow', url_name='borrow',
-            serializer_class = BorrowBookSerializer)
+            serializer_class = BorrowBookSerializer, permission_classes = [permissions.IsAuthenticated])
     def borrow_book(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -53,7 +53,8 @@ class BookViewSet(viewsets.GenericViewSet,
         issuance_serializer = self.serializer_class(issuance)
         return Response(issuance_serializer.data, status=status.HTTP_201_CREATED)
     
-    @action(detail=True, methods=['post'], url_path='return', url_name='return')
+    @action(detail=True, methods=['post'], url_path='return', url_name='return',
+            permission_classes = [permissions.IsAuthenticated])
     def return_book(self, request, *args, **kwargs):
         book = self.get_object()
         user = request.user

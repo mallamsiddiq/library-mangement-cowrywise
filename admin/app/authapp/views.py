@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from rest_framework_simplejwt.views import TokenObtainPairView
+from drf_spectacular.utils import extend_schema
 
 from authapp.serializers import (
     AdminRegistrationSerializer, UserSerializer, AdminLoginSerializer
@@ -18,7 +19,11 @@ class AuthViewSet(viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated, IsLibraryAdminUser]
-    
+
+    @extend_schema(
+        summary="Register a new Admin user",
+        description="Only emails with a @cowrywise domain are allowed to register here."
+    )
     @action(detail=False, methods=['post'], url_path='admin-signup', 
             permission_classes = [permissions.AllowAny],
             serializer_class=AdminRegistrationSerializer,)

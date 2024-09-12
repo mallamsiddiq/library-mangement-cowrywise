@@ -18,7 +18,7 @@ class BookViewSet(viewsets.GenericViewSet,
     
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated, IsLibraryAdminUser]
+    permission_classes = [permissions.AllowAny]
     
     def get_queryset(self):
         if self.action == 'unavailables':
@@ -47,14 +47,14 @@ class BookViewSet(viewsets.GenericViewSet,
 class LibraryUsersViewset(viewsets.ReadOnlyModelViewSet):
     queryset = get_user_model().objects.all()
     serializer_class = LibraryUserSerializer
-    permission_classes = [permissions.IsAuthenticated, IsLibraryAdminUser]
+    permission_classes = [permissions.AllowAny]
     
 
 class IssuanceViewSet(viewsets.ReadOnlyModelViewSet):
     
     queryset = Issuance.objects.select_related('book', 'user').all()
     serializer_class = IssuanceSerializer
-    permission_classes = [permissions.IsAuthenticated, IsLibraryAdminUser]
+    permission_classes = [permissions.AllowAny]
     
     def get_serializer_class(self):
         if self.action in {'retrieve'}:
