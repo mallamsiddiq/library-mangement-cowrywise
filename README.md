@@ -58,7 +58,7 @@ This project is a library management system with separate APIs for frontend and 
     ```bash
     # For the admin service
     # cd into the admin root to spin
-    cd cowrywise/admin
+    cd admin
     # run
     docker compose up -d --build
 
@@ -272,7 +272,7 @@ Creates a new book borrow issuance .
 
 ```json
 {
-  "date_to_return": "YYYY-MM-DDTHH:MM:SSZ",
+  "return_in_days": "<int>",
   "user": "your id", "optional, you can ignore if you have auth token,  the system knows you if you are logged in"
 }
 ```
@@ -309,7 +309,7 @@ Navigate to the respective directories and build the containers:
 
 ```bash
 # For the admin service
-cd cowrywise/admin
+cd admin
 docker-compose exec api python manage.py test
 
 # For the users service
