@@ -15,4 +15,4 @@ def callback(ch, method, properties, body):
             
 
 if __name__ == '__main__':
-    start_event_consumer(queue_name='admin_book_updates', callback=callback)
+    start_event_consumer('admin_events', 'admin_book_updates', callback=callback)

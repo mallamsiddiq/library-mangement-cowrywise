@@ -14,6 +14,8 @@ if "%1"=="test-admin" goto test-admin
 if "%1"=="test-users" goto test-users
 if "%1"=="test-all" goto test-all
 if "%1"=="logs" goto logs
+if "%1"=="down-v" goto down-v
+if "%1"=="down" goto down
 
 echo Invalid argument. Here is the Usage:
 echo   %0 start
@@ -24,6 +26,8 @@ echo   %0 test-admin
 echo   %0 test-users
 echo   %0 test-all
 echo   %0 logs
+echo   %0 down
+echo   %0 down-v
 goto end
 
 :: Start Docker services with delay
@@ -31,7 +35,7 @@ goto end
 cd %ADMIN_PATH%
 docker compose up -d --build
 :: Wait for 30 seconds before starting the users service
-timeout /t 30 /nobreak
+timeout /t 5 /nobreak
 cd ..\%USERS_PATH%
 docker compose up -d --build
 goto end
@@ -65,6 +69,20 @@ cd %ADMIN_PATH%
 docker compose logs
 cd ..\%USERS_PATH%
 docker compose logs
+goto end
+
+:down
+cd %ADMIN_PATH%
+docker compose down
+cd ..\%USERS_PATH%
+docker compose down
+goto end
+
+:down-v
+cd %ADMIN_PATH%
+docker compose down -v
+cd ..\%USERS_PATH%
+docker compose down -v
 goto end
 
 :: Run tests for the admin service

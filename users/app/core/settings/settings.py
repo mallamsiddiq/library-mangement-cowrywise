@@ -32,7 +32,6 @@ DJANGO_APPS = [
 ]
 
 APPS = [
-    'authapp',
     'library',
 ]
 
@@ -57,8 +56,9 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware', 
 ]
+
 
 ROOT_URLCONF = 'core.urls'
 
@@ -79,7 +79,7 @@ TEMPLATES = [
     },
 ]
 
-AUTH_USER_MODEL = "authapp.User"
+AUTH_USER_MODEL = "library.User"
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
@@ -89,8 +89,9 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     "EXCEPTION_HANDLER": "drf_standardized_errors.handler.exception_handler",
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'utils.middleware.JWTAuthServiceBackend',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -99,7 +100,7 @@ REST_FRAMEWORK = {
 
 # OpenAPI Configuration
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Book Library Frontend API ',
+    'TITLE': 'Book Library Admin API ',
     'DESCRIPTION': (
         "This API is provided for  Cowrywise test Book library\n\n"
         "Author: Akinyemi Sodiq @mallamsiddiq@gmail.com \n\n"
@@ -113,29 +114,11 @@ SPECTACULAR_SETTINGS = {
 }
 
 
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
-    "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": False,
-    "UPDATE_LAST_LOGIN": True,
-
-    "ALGORITHM": "HS256",
-    "SIGNING_KEY": SECRET_KEY,
-    "VERIFYING_KEY": "",
-    "AUDIENCE": None,
-    "ISSUER": None,
-    "JSON_ENCODER": None,
-    "JWK_URL": None,
-    "LEEWAY": 0,
-}
-
 AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin,
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+AUTH_SERVICE_URL = os.getenv('AUTH_SERVICE_URL', '')
 
 DATABASES = {
     'default': dj_database_url.config(

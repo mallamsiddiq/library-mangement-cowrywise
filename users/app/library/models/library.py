@@ -61,7 +61,7 @@ class Book(AuditableModel):
 
 
 class Issuance(AuditableModel):
-    user = models.ForeignKey('authapp.User', on_delete=models.CASCADE, 
+    user = models.ForeignKey('User', on_delete=models.CASCADE, 
                              related_name='book_issuances')
     book = models.ForeignKey('Book', on_delete=models.CASCADE, 
                              related_name='issuances')

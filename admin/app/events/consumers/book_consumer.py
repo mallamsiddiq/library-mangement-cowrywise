@@ -16,4 +16,7 @@ def callback(ch, method, properties, body):
             
 
 if __name__ == '__main__':
-    start_event_consumer(queue_name='frontend_book_updates', callback=callback)
+    start_event_consumer('frontend_events', 
+                         'frontend_book_updates',
+                         callback=callback,
+                         exchange_type='direct')

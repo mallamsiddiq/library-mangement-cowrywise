@@ -14,7 +14,7 @@ def publish_to_network(message, queue, exchange = None):
     exchange = exchange or 'admin_events'
     
     # Declare a queue to send the message to
-    channel.queue_declare(queue=queue)
+    channel.queue_declare(queue=queue, durable=True)
 
     # Prepare the message content (you can send more details about the book)
     message = message

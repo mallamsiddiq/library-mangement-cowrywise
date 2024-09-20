@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from library.serializers import (LibraryUserSerializer, BookSerializer, PlainBookSerializer,
                                  IssuanceSerializer, IssuanceDetailSerializer)
 from library.models import Book, Issuance
-from authapp.permission import IsLibraryAdminUser
+from library.permission import IsLibraryAdminUser
     
 
 class BookViewSet(viewsets.GenericViewSet, 

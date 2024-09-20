@@ -14,7 +14,7 @@ def publish_to_network(message, queue, exchange = None):
     exchange = exchange or 'users_events'
     
     # Declare a queue to send the message to
-    channel.queue_declare(queue=queue)
+    channel.queue_declare(queue=queue, durable=True)
 
     message = message
 

@@ -11,14 +11,6 @@ class BookRemovalTestCase(IgnoreEventBusActionsMixin, APITestCase):
     def setUp(self):
         # Create a user to authenticate as an admin
         self.client = APIClient()
-        self.user = get_user_model().objects.create_superuser(
-            email='admin@cowrywise.com',
-            password='adminpassword',
-            firstname='Admin',
-            lastname='User'
-        )
-        # Log in as the superuser
-        self.client.force_authenticate(user=self.user)
         
         # Create a book to be deleted
         self.book = Book.objects.create(

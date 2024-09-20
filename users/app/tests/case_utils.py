@@ -1,5 +1,6 @@
 # test_mixins.py
 from unittest.mock import patch
+from django.conf import settings
 
 
 class IgnoreEventBusActionsMixin:
@@ -27,3 +28,26 @@ class IgnoreEventBusActionsMixin:
         for patcher in cls.__mock_patchers:
             patcher.stop()
         super().tearDownClass()
+        
+        
+def mock_auth_service_call(auth_url=settings.AUTH_SERVICE_URL, 
+                                token='testtoken123'):
+    """
+    Custom decorator to mock authentication service.
+    """
+    def decorator(func):
+        @patch('utils.middleware.requests.get')  # Mock the requests.get method used in your custom JWT middleware
+        def wrapper(self, mock_get, *args, **kwargs):
+            # Mock the authentication response
+            mock_get.return_value.status_code = 200
+            mock_get.return_value.json.return_value = {
+                'id': str(self.user.pk),
+                'email': self.user.email,
+                'is_staff': self.user.is_staff,
+                'is_active': self.user.is_active,
+            }
+
+            # Call the original test function
+            return func(self, *args, **kwargs)
+        return wrapper
+    return decorator

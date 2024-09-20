@@ -8,6 +8,6 @@ class BookNotAvailableException(APIException):
     
     
 class UserNotFoundException(APIException):
-    status_code = 401
+    status_code = 404
     default_detail = 'Provide Your Id or pass in Authentication Token'
     default_code = 'user_not_found'

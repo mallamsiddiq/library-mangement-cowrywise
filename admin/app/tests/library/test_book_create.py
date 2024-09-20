@@ -9,7 +9,7 @@ from tests.case_utils import IgnoreEventBusActionsMixin
 class BookCreationTestCase(IgnoreEventBusActionsMixin, APITestCase):
     def setUp(self):
         # Create a user to authenticate as an admin
-        self.user = get_user_model().objects.create_superuser(
+        self.user = get_user_model().objects.create(
             email='admin@cowrywise.com',
             password='adminpassword',
             firstname='Admin',

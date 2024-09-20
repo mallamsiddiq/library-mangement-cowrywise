@@ -7,9 +7,10 @@ drf-standardized-errors
 # encrypted-model-fields
 whitenoise
 dj-database-url
-djangorestframework-simplejwt
+# djangorestframework-simplejwt
 psycopg2-binary
 django-redis
 django-debug-toolbar
 django-cors-headers
 pika
+requests

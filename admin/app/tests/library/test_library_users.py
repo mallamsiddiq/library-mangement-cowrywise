@@ -15,16 +15,9 @@ class LibraryUsersViewSetTestCase(IgnoreEventBusActionsMixin, APITestCase):
     
     def setUp(self):
         self.client = APIClient()
-        # Create an admin user for authentication
-        self.admin_user = get_user_model().objects.create_superuser(
-            email='admin@cowrywise.com',
-            password='adminpassword',
-            firstname='Admin',
-            lastname='User'
-        )
         
         self.library_users =[
-            get_user_model().objects.create_user(
+            get_user_model().objects.create(
                 email=f'user{idx}@email.com',
                 password=f'pasword {idx}',
                 firstname=f'Name {idx}',
@@ -32,10 +25,6 @@ class LibraryUsersViewSetTestCase(IgnoreEventBusActionsMixin, APITestCase):
             ) for idx in range(1, 5)] 
         
         self.library_user1, self.library_user2, *____ = self.library_users
-            
-    
-        # Log in as the superuser
-        self.client.force_authenticate(user = self.admin_user)
         
         self.user_list_url = reverse('library:users-list')
         self.user_detail_url = reverse('library:users-detail', 
@@ -50,7 +39,7 @@ class LibraryUsersViewSetTestCase(IgnoreEventBusActionsMixin, APITestCase):
         response = self.client.get(self.user_list_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.data['results']
-        self.assertEqual(len(self.library_users) + 1, len(data))
+        self.assertEqual(len(self.library_users), len(data))
         
         for idx in range(len(self.library_users)):
             user_data = data[idx]

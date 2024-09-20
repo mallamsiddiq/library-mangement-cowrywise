@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from library.models import Book, Issuance  # Adjust the import based on your project structure
-from authapp.models import User
+from library.models import User
 
 
 class DataEchangeSerializer(serializers.ModelSerializer):

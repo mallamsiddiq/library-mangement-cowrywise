@@ -2,7 +2,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 from library.models import Book
-from authapp.models import User
+from library.models import User
 from events.producers.send_book_updates import send_book_event
 from events.producers.send_users_updates import send_user_event
 

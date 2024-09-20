@@ -9,6 +9,5 @@ urlpatterns = [
     path(f"{url_version}/redoc/", SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
-    path(f"{url_version}/", include('authapp.urls')),
     path(f"{url_version}/", include('library.urls')),
 ]

@@ -10,13 +10,14 @@ from rest_framework import status
 from django.test import TestCase
 from library.models import Book, Issuance
 from django.contrib.auth import get_user_model
+from unittest.mock import patch
 
-from tests.case_utils import IgnoreEventBusActionsMixin
+from tests.case_utils import IgnoreEventBusActionsMixin, mock_auth_service_call
 
 class BookViewSetTests(IgnoreEventBusActionsMixin, TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_user(
+        self.user = get_user_model().objects.create(
             firstname='John', lastname='Doe', email='john.doe@example.com', password='password123'
         )
     
@@ -24,6 +25,10 @@ class BookViewSetTests(IgnoreEventBusActionsMixin, TestCase):
             title='Test Book', author='Test Author', publisher='Wiley', category='fiction',
             total_copies=10, copies_borrowed=0
         )
+        
+        self.headers = {
+            'HTTP_AUTHORIZATION': f'Bearer testtoken123'
+        }
         
 
         self.borrow_url = reverse('library:books-borrow', kwargs={'pk': self.book.pk})
@@ -54,17 +59,17 @@ class BookViewSetTests(IgnoreEventBusActionsMixin, TestCase):
         response = self.client.post(self.borrow_url, 
                                     data={'return_in_days': 4})
         
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         
+    @mock_auth_service_call()  # Use the custom decorator to mock the authentication
     def test_borrow_book_success_no_id_but_auth(self):
-        
-        self.client.force_authenticate(user=self.user)
         
         current_copies_borrowed = self.book.copies_borrowed
         current_total_issuamces = Issuance.objects.count()
+
         
-        response = self.client.post(self.borrow_url, 
-                                    data={'return_in_days': (return_in_days:= 4)})
+        response = self.client.post(self.borrow_url, **self.headers,
+                                    data={'return_in_days': (return_in_days:=4)})
         
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         

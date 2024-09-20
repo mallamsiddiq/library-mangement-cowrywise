@@ -5,7 +5,7 @@ app_name = 'library'
 
 router = DefaultRouter()
 router.register('books', BookViewSet, basename='books')
-router.register('borrowing', IssuanceViewSet, basename='book-borrowing')
+router.register('borrowing-cases', IssuanceViewSet, basename='book-borrowing')
 router.register('users', LibraryUsersViewset, basename='users')
 
 urlpatterns = [

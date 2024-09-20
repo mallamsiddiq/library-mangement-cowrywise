@@ -20,7 +20,7 @@ services:
   api: &api
     build:
       context: ./
-      dockerfile: ./deployments/docker/dev/Dockerfile
+      dockerfile: ./docker/Dockerfile
     env_file:
       - ./.env
     ports:

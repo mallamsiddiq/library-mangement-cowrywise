@@ -16,24 +16,14 @@ class BookListsTestCase(IgnoreEventBusActionsMixin, APITestCase):
     def setUp(self):
         self.client = APIClient()
         # Create an admin user for authentication
-        self.admin_user = get_user_model().objects.create_superuser(
-            email='admin@cowrywise.com',
-            password='adminpassword',
-            firstname='Admin',
-            lastname='User'
-        )
-        
         self.library_user1, self.library_user2 =[
-            get_user_model().objects.create_user(
+            get_user_model().objects.create(
                 email=f'user{idx}@email.com',
                 password=f'pasword {idx}',
                 firstname=f'Name {idx}',
                 lastname=f'User {idx}'
             ) for idx in range(1, 3)] 
-            
-    
-        # Log in as the superuser
-        self.client.force_authenticate(user = self.admin_user)
+
         
         self.books  = [
             Book.objects.create(

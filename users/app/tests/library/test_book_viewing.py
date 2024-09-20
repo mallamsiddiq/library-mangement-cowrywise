@@ -15,7 +15,7 @@ class BookViewingTests(IgnoreEventBusActionsMixin, TestCase):
     
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_user(
+        self.user = get_user_model().objects.create(
             firstname='John', lastname='Doe', email='john.doe@example.com', password='password123'
         )
         self.books = [Book.objects.create(
