@@ -14,10 +14,9 @@ from authapp.serializers import (
 class AuthViewSet(viewsets.GenericViewSet):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     
-    @action(detail=False, methods=['post'], url_path='register', 
-            permission_classes = [permissions.AllowAny],
+    @action(detail=False, methods=['post'], url_path='register',
             serializer_class=RegistrationSerializer,)
     def register(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -27,13 +26,13 @@ class AuthViewSet(viewsets.GenericViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     @action(detail=False, methods=['post'], url_path='login',
-            permission_classes = [permissions.AllowAny],
             serializer_class = TokenObtainPairView.serializer_class)
     def login(self, request):
         view = TokenObtainPairView.as_view()
         return view(request._request)
     
-    @action(detail=False, methods=['get'], url_path='me')
+    @action(detail=False, methods=['get'], url_path='me',
+            permission_classes = [permissions.IsAuthenticated])
     def my_profile(self, request):
         user = request.user
         serializer = self.serializer_class(user)

@@ -24,7 +24,6 @@ class BookViewSetTests(IgnoreEventBusActionsMixin, TestCase):
             title='Test Book', author='Test Author', publisher='Wiley', category='fiction',
             total_copies=10, copies_borrowed=0
         )
-        
 
         self.borrow_url = reverse('library:books-borrow', kwargs={'pk': self.book.pk})
         self.return_url = reverse('library:books-return', kwargs={'pk': self.book.pk})

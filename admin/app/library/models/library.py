@@ -40,7 +40,7 @@ class Issuance(AuditableModel):
                              related_name='book_issuances')
     book = models.ForeignKey('Book', on_delete=models.CASCADE, 
                              related_name='issuances')
-    date_to_return = models.DateTimeField()
+    date_to_return = models.DateTimeField(null=True)
     returned_at = models.DateTimeField(null=True, blank=True, db_index=True)
 
     def __str__(self):

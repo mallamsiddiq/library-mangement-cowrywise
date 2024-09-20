@@ -56,7 +56,8 @@ class Book(AuditableModel):
         """
         Reduces the borrowed copies by 1
         """
-        self.copies_borrowed -= 1
+        if self.copies_borrowed > 0:
+            self.copies_borrowed -= 1
         self.save(update_fields=['copies_borrowed'])
 
 
@@ -91,7 +92,7 @@ class Issuance(AuditableModel):
         
     @property
     def is_returned(self):
-        return bool(self.returned_at is None)
+        return bool(self.returned_at)
         
     @property
     def is_overdue(self):
